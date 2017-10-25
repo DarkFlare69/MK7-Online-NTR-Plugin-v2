@@ -13,9 +13,13 @@ Rev1 JPN - Fully Compatible
 
 1. Download the plugin
 2. Place the plugin into the folder for your region:
+
 USA   -   SD:/plugin/0004000000030800/
+
 EUR   -   SD:/plugin/0004000000030700/
+
 JPN   -   SD:/plugin/0004000000030600/
+
 3. Launch NTR CFW
 4. Launch Mario Kart 7
 5. Press Select to open the cheat menu
