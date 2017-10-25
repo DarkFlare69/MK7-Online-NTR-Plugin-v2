@@ -18,6 +18,7 @@ Rev1 JPN - Fully Compatible
 
 1. Download the plugin
 2. Place the plugin into the folder for your region:
+
 USA   -   SD:/plugin/0004000000030800/
 
 EUR   -   SD:/plugin/0004000000030700/
