@@ -99,9 +99,9 @@ unsigned int	GetOldPointer5D0(void)
 {
 	unsigned int g_oldRacePointer5D0;
 	unsigned int g_raceCondition = GetRaceCondition();
-	if (g_raceCondition == 1)
+	if (g_raceCondition == 1 && READU32(0xFFFFBF4) > 0x14000000 && READU32(0xFFFFBF4) < 0x18000000 && READU32(READU32(0xFFFFBF4) + 0x5D0) > 0x14000000 && READU32(READU32(0xFFFFBF4) + 0x5D0) < 0x18000000)
 	{
-		g_oldRacePointer5D0 = READU32(0x5D0 + READU32(0xFFFFBF4));
+		g_oldRacePointer5D0 = READU32(READU32(0xFFFFBF4) + 0x5D0);
 		return (g_oldRacePointer5D0);
 	}
 }
