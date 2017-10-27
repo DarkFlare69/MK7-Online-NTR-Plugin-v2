@@ -50,9 +50,14 @@ unsigned int	GetRacePointer(void)
 {
 	unsigned int g_racePointer;
 	unsigned int g_raceCondition = GetRaceCondition();
-	if (g_raceCondition == 1)
+	if (g_raceCondition == 1 && READU32(0x140002F4) > 0x14000000 && READU32(0x140002F4) < 0x18000000 && READU32(READU32(0x140002F4) + 0x14) > 0x14000000 && READU32(READU32(0x140002F4) + 0x14) < 0x18000000 && READU32(READU32(READU32(0x140002F4) + 0x14) + 0x518) > 0x14000000 && READU32(READU32(READU32(0x140002F4) + 0x14) + 0x518) < 0x18000000)
 	{
 		g_racePointer = READU32(READU32(READU32(READU32(0x140002F4) + 0x14) + 0x518) + 0x1C);
+		return (g_racePointer);
+	}
+	else
+	{
+		g_racePointer = 0;
 		return (g_racePointer);
 	}
 }
@@ -60,8 +65,16 @@ unsigned int	GetRacePointer(void)
 unsigned int	GetRaceCondition(void)
 {
 	unsigned int g_raceCondition;
-    g_raceCondition = READU8(READU32(READU32(0x14000084) + 0x316C) + 0x118);
-	return (g_raceCondition);
+	if (READU32(0x14000084) > 0x13000000 && READU32(0x14000084) < 0x18000000)
+	{
+		g_raceCondition = READU8(READU32(READU32(0x14000084) + 0x316C) + 0x118);
+		return (g_raceCondition);
+	}
+	else
+	{
+		g_raceCondition = 0;
+		return (g_raceCondition);
+	}
 }
 
 unsigned int	GetFNsPointer(void)
@@ -69,28 +82,41 @@ unsigned int	GetFNsPointer(void)
 	unsigned int g_FNsPointer;
 	unsigned int g_rev = GetRev();
 	unsigned int g_raceCondition = GetRaceCondition();
-	if (g_raceCondition == 1)
+	if (g_raceCondition == 1 && READU32(0x140005AC) > 0x14000000 && READU32(0x140005AC) < 0x18000000)
 	{
-		if (g_rev == 0)
+		if (g_rev == 0 && READU32(READU32(0x140005AC) + 0x650) > 0x14000000 && READU32(READU32(0x140005AC) + 0x650) < 0x18000000)
 		{
 			g_FNsPointer = READU32(READU32(0x140005AC) + 0x650);
 			return (g_FNsPointer);
 		}
 		if (g_rev == 1 || g_rev == 2)
 		{
-			g_FNsPointer = READU32(READU32(0x140005AC) + 0x628);
-			return (g_FNsPointer);
+			if (READU32(READU32(0x140005AC) + 0x628) > 0x14000000 && READU32(READU32(0x140005AC) + 0x628) < 0x18000000)
+			{
+				g_FNsPointer = READU32(READU32(0x140005AC) + 0x628);
+				return (g_FNsPointer);
+			}
 		}
     }
+	else
+	{
+		g_FNsPointer = 0;
+		return (g_FNsPointer);
+	}
 }
 
 unsigned int	GetOldPointer5CC(void)
 {
 	unsigned int g_oldRacePointer5CC;
 	unsigned int g_raceCondition = GetRaceCondition();
-	if (g_raceCondition == 1)
+	if (g_raceCondition == 1 && READU32(0xFFFFBF4) > 0x14000000 && READU32(0xFFFFBF4) < 0x18000000 && READU32(READU32(0xFFFFBF4) + 0x5CC) > 0x14000000 && READU32(READU32(0xFFFFBF4) + 0x5CC) < 0x18000000)
 	{
-		g_oldRacePointer5CC = READU32(0x5CC + READU32(0xFFFFBF4));
+		g_oldRacePointer5CC = READU32(READU32(0xFFFFBF4) + 0x5CC);
+		return (g_oldRacePointer5CC);
+	}
+	else
+	{
+		g_oldRacePointer5CC = 0;
 		return (g_oldRacePointer5CC);
 	}
 }
@@ -104,6 +130,11 @@ unsigned int	GetOldPointer5D0(void)
 		g_oldRacePointer5D0 = READU32(READU32(0xFFFFBF4) + 0x5D0);
 		return (g_oldRacePointer5D0);
 	}
+	else
+	{
+		g_oldRacePointer5D0 = 0;
+		return (g_oldRacePointer5D0);
+	}
 }
 
 unsigned int	GetItemPointer(void)
@@ -113,16 +144,24 @@ unsigned int	GetItemPointer(void)
 	unsigned int g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1)
 	{
-		if (g_rev == 0)
+		if (g_rev == 0 && READU32(0x17782494) > 0x14000000 && READU32(0x17782494) < 0x18000000 && READU32(READU32(0x17782494) + 0x27AC) > 0x14000000 && READU32(READU32(0x17782494) + 0x27AC) < 0x18000000)
 		{
 			g_itemPointer = READU32(READU32(0x17782494) + 0x27AC);
 			return (g_itemPointer);
 		}
 		if (g_rev == 1 || g_rev == 2)
 		{
-			g_itemPointer = READU32(READU32(0x177BE494) + 0x27AC);
-			return (g_itemPointer);
+			if (READU32(0x177BE494) > 0x14000000 && READU32(0x177BE494) < 0x18000000 && READU32(READU32(0x177BE494) + 0x27AC) > 0x14000000 && READU32(READU32(0x177BE494) + 0x27AC) < 0x18000000)
+			{
+				g_itemPointer = READU32(READU32(0x177BE494) + 0x27AC);
+				return (g_itemPointer);
+			}
 		}
+	}
+	else
+	{
+		g_itemPointer = 0;
+		return (g_itemPointer);
 	}
 }
 
