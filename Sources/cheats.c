@@ -212,9 +212,9 @@ void	writeSpeed(u32 speed)
 
 void	writeVR(u32 vr)
 {
-	if (READU32(0x663D04) != 0)
+	if (READU32(0x663D04) > 0x100000)
 	{
-		WRITEU32(READU32(0x663D04) - 0xE30, 0x3F000000 + vr);
+		WRITEU32(READU32(0x663D04) - 0xE30, vr);
 	}
 }
 
@@ -538,7 +538,7 @@ void	disableFirstPerson(void)
 
 void	vrExtender(void)
 {
-	if (READU32(0x663D04) > 0x10000000)
+	if (READU32(0x663D04) > 0x100000)
 	{
 		if(is_pressed(ST))
 		{
