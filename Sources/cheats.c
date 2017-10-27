@@ -538,18 +538,33 @@ void	disableFirstPerson(void)
 
 void	vrExtender(void)
 {
-	if(is_pressed(ST))
-		writeVR(999999);
-	if(is_pressed(SE))
-		writeVR(420000);
-	if(is_pressed(DD))
-		writeVR(0);
-	if(is_pressed(DU))
-		writeVR(696969);
-	if(is_pressed(DR))
-		writeVR(666666);
-	if(is_pressed(DL))
-		writeVR(777777);
+	if (READU32(0x663D04) > 0x10000000)
+	{
+		if(is_pressed(ST))
+		{
+			writeVR(999999);
+		}
+		if(is_pressed(SE))
+		{
+			writeVR(420000);
+		}
+		if(is_pressed(DD))
+		{
+			writeVR(0);
+		}
+		if(is_pressed(DU))
+		{
+			writeVR(696969);
+		}
+		if(is_pressed(DR))
+		{
+			writeVR(666666);
+		}
+		if(is_pressed(DL))
+		{
+			writeVR(777777);
+		}
+	}
 }
 
 void	randomVR(void)
