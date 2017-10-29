@@ -11,6 +11,7 @@ u32 dataZ = 0;
 static u32 x = 0;
 static u32 y = 0;
 static u32 z = 0;
+unsigned int data = 0;
 unsigned int g_rev;
 unsigned int g_racePointer;
 unsigned int g_raceCondition;
@@ -80,23 +81,11 @@ unsigned int	GetRaceCondition(void)
 unsigned int	GetFNsPointer(void)
 {
 	unsigned int g_FNsPointer;
-	unsigned int g_rev = GetRev();
 	unsigned int g_raceCondition = GetRaceCondition();
-	if (g_raceCondition == 1 && READU32(0x140005AC) > 0x14000000 && READU32(0x140005AC) < 0x18000000)
+	if (g_raceCondition == 1 && READU32(0xFFFF6F0) > 0x14000000 && READU32(0xFFFF6F0) < 0x18000000)
 	{
-		if (g_rev == 0 && READU32(READU32(0x140005AC) + 0x650) > 0x14000000 && READU32(READU32(0x140005AC) + 0x650) < 0x18000000)
-		{
-			g_FNsPointer = READU32(READU32(0x140005AC) + 0x650);
-			return (g_FNsPointer);
-		}
-		if (g_rev == 1 || g_rev == 2)
-		{
-			if (READU32(READU32(0x140005AC) + 0x628) > 0x14000000 && READU32(READU32(0x140005AC) + 0x628) < 0x18000000)
-			{
-				g_FNsPointer = READU32(READU32(0x140005AC) + 0x628);
-				return (g_FNsPointer);
-			}
-		}
+		g_FNsPointer = READU32(0xFFFF6F0) + 8;
+		return (g_FNsPointer);
     }
 	else
 	{
@@ -140,20 +129,14 @@ unsigned int	GetOldPointer5D0(void)
 unsigned int	GetItemPointer(void)
 {
 	unsigned int g_itemPointer;
-	unsigned int g_rev = GetRev();
 	unsigned int g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1)
 	{
-		if (g_rev == 0 && READU32(0x17782494) > 0x14000000 && READU32(0x17782494) < 0x18000000 && READU32(READU32(0x17782494) + 0x27AC) > 0x14000000 && READU32(READU32(0x17782494) + 0x27AC) < 0x18000000)
+		if (READU32(0x17782494) > 0x14000000 || READU32(0x177BE494) > 0x14000000)
 		{
-			g_itemPointer = READU32(READU32(0x17782494) + 0x27AC);
-			return (g_itemPointer);
-		}
-		if (g_rev == 1 || g_rev == 2)
-		{
-			if (READU32(0x177BE494) > 0x14000000 && READU32(0x177BE494) < 0x18000000 && READU32(READU32(0x177BE494) + 0x27AC) > 0x14000000 && READU32(READU32(0x177BE494) + 0x27AC) < 0x18000000)
+			if (READU32(0x17782494) < 0x18000000 || READU32(0x177BE494) < 0x18000000)
 			{
-				g_itemPointer = READU32(READU32(0x177BE494) + 0x27AC);
+				g_itemPointer = READU32(READU32(READU32(0x14000074) - 0x1B5C) + 0x27AC);
 				return (g_itemPointer);
 			}
 		}
@@ -179,6 +162,20 @@ void	writeItem(u32 item)
 }
 
 void	writeSpeed(u32 speed)
+{
+	for (int i = 0; i < 0x2D; i++)
+	{
+		if (READU32(0x140002F4) > 0x14000000 && READU32(0x140002F4) < 0x18000000 && READU32(READU32(0x140002F4) - 0xA4) > 0x14000000 && READU32(READU32(0x140002F4) - 0xA4) < 0x18000000)
+		{
+			WRITEU32(READU32(READU32(0x140002F4) - 0xA4) - 0x2C3B0 + (i * 4), speed);
+			WRITEU32(READU32(READU32(0x140002F4) - 0xA4) - 0x28E90 + (i * 4), speed);
+			WRITEU32(READU32(READU32(0x140002F4) - 0xA4) - 0x1C730 + (i * 4), speed);
+		}
+	}
+}
+			
+
+/* void	writeSpeed(u32 speed)
 {
 	unsigned int g_rev = GetRev();
 	if (g_rev == 0)
@@ -208,7 +205,7 @@ void	writeSpeed(u32 speed)
 			WRITEU32(0x153868F0 + (i * 4), speed);
 		}
 	}
-}
+} */
 
 void	writeVR(u32 vr)
 {
@@ -391,6 +388,90 @@ void	waterEverywhere(void)
 	if (g_raceCondition == 1 && READU32(0x663954) > 0x14000000 && READU32(0x663954) < 0x18000000 && READU32(READU32(0x663954) + 0x58) > 0x14000000 && READU32(READU32(0x663954) + 0x58) < 0x18000000)
 	{
 		WRITEU32(READU32(READU32(0x663954) + 0x58) + 0x420, 0x48000000);
+	}
+}
+
+/* void	driveAnywhere(void)
+{
+	g_raceCondition = GetRaceCondition();
+	g_racePointer = GetRacePointer();
+	if (g_raceCondition != 1)
+	{
+		WRITEU32(0x655240, 0);
+	}
+	if (is_pressed(BUTTON_SE))
+	{
+		WRITEU32(0x655240, 1);
+		WRITEU32(0x6656D8, 0xFFFF);
+	}
+	if (is_pressed(BUTTON_ST))
+	{
+		WRITEU32(0x655240, 0);
+		WRITEU32(0x6656D8, 0x14);
+	}
+	if (READU32(0x655240) == 1)
+	{
+		if (g_raceCondition == 1)
+		{
+			WRITEU32(g_racePointer + 0x3C, 0);
+		}
+	}
+	if (is_pressed(DU + SE))
+	{
+		if (READU32(0x655240) == 1)
+		{
+			if (g_raceCondition == 1)
+			{
+				WRITEU32(g_racePointer + 0x3C, 0x41000000);
+			}
+		}
+	}
+	if (is_pressed(BUTTON_DD) && is_pressed(BUTTON_SE))
+	{
+		if (READU32(0x655240) == 1)
+		{
+			if (g_raceCondition == 1)
+			{
+				WRITEU32(g_racePointer + 0x3C, 0xC1000000);
+			}
+		}
+	}
+} */
+
+void	driveAnywhere(void)
+{
+	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_racePointer = GetRacePointer();
+	unsigned int data = 0;
+	if (g_raceCondition != 1)
+	{
+		data = 0;
+		WRITEU32(0x6656D8, 0x14);
+	}
+	if (g_raceCondition == 1)
+	{
+		if (is_pressed(ST))
+		{
+			data = 0;
+			WRITEU32(0x6656D8, 0x14);
+		}
+		if (is_pressed(SE))
+		{
+			data = 1;
+			WRITEU32(0x6656D8, 0xFFFF);
+			if (data == 1)
+			{
+				WRITEU32(g_racePointer + 0x3C, 0);
+				if (is_pressed(DU))
+				{
+					WRITEU32(g_racePointer + 0x3C, 0x41000000);
+				}
+				if (is_pressed(DD))
+				{
+					WRITEU32(g_racePointer + 0x3C, 0xC1000000);
+				}
+			}
+		}
 	}
 }
 

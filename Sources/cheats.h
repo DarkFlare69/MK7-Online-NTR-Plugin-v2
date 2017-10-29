@@ -43,6 +43,7 @@ void	moonjump(void);
 void	saveSlotTeleporter(void);
 void	maxTimer(void);
 void	waterEverywhere(void);
+void	driveAnywhere(void);
 void	fastBlueShell(void);
 void	stoppedBlueShell(void);
 void	fastGreenShell(void);
