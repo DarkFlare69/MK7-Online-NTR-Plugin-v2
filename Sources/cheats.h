@@ -18,6 +18,8 @@
     #define SUBTOUNSIGNED(addr, value)            *(u32 *)(addr) -= value
 #endif
 
+void	stalkingTest(void);
+
 unsigned int	GetRev(void);
 unsigned int	GetFNsPointer(void);
 unsigned int	GetRacePointer(void);
@@ -56,7 +58,7 @@ void	blueShellRide(void);
 void	itemWheel(void);
 void	TwoHundredCC(void);
 void	FiveHundredCC(void);
-void	disableFirstPerson(void);
+void	disableFirstPersonView(void);
 void	vrExtender(void);
 void	randomVR(void);
 void	unlockEverything(void);

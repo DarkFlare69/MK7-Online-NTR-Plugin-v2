@@ -391,58 +391,11 @@ void	waterEverywhere(void)
 	}
 }
 
-/* void	driveAnywhere(void)
-{
-	g_raceCondition = GetRaceCondition();
-	g_racePointer = GetRacePointer();
-	if (g_raceCondition != 1)
-	{
-		WRITEU32(0x655240, 0);
-	}
-	if (is_pressed(BUTTON_SE))
-	{
-		WRITEU32(0x655240, 1);
-		WRITEU32(0x6656D8, 0xFFFF);
-	}
-	if (is_pressed(BUTTON_ST))
-	{
-		WRITEU32(0x655240, 0);
-		WRITEU32(0x6656D8, 0x14);
-	}
-	if (READU32(0x655240) == 1)
-	{
-		if (g_raceCondition == 1)
-		{
-			WRITEU32(g_racePointer + 0x3C, 0);
-		}
-	}
-	if (is_pressed(DU + SE))
-	{
-		if (READU32(0x655240) == 1)
-		{
-			if (g_raceCondition == 1)
-			{
-				WRITEU32(g_racePointer + 0x3C, 0x41000000);
-			}
-		}
-	}
-	if (is_pressed(BUTTON_DD) && is_pressed(BUTTON_SE))
-	{
-		if (READU32(0x655240) == 1)
-		{
-			if (g_raceCondition == 1)
-			{
-				WRITEU32(g_racePointer + 0x3C, 0xC1000000);
-			}
-		}
-	}
-} */
-
 void	driveAnywhere(void)
 {
 	unsigned int g_raceCondition = GetRaceCondition();
 	unsigned int g_racePointer = GetRacePointer();
-	unsigned int data = 0;
+	static unsigned int data = 0;
 	if (g_raceCondition != 1)
 	{
 		data = 0;
@@ -459,16 +412,84 @@ void	driveAnywhere(void)
 		{
 			data = 1;
 			WRITEU32(0x6656D8, 0xFFFF);
-			if (data == 1)
+		}
+		if (data == 1)
+		{
+			WRITEU32(g_racePointer + 0x3C, 0);
+			if (is_pressed(SE + DU))
 			{
-				WRITEU32(g_racePointer + 0x3C, 0);
-				if (is_pressed(DU))
+				WRITEU32(g_racePointer + 0x3C, 0x41000000);
+			}
+			if (is_pressed(SE + DD))
+			{
+				WRITEU32(g_racePointer + 0x3C, 0xC1000000);
+			}
+		}
+	}
+}
+
+void	stalkingTest(void)
+{
+	unsigned int g_racePointer = GetRacePointer();
+	unsigned int g_raceCondition = GetRaceCondition();
+	static unsigned int tempActive = 0;
+	static unsigned int pointer = 0;
+	static unsigned int active = 0;
+	static unsigned int dataX = 0;
+	static unsigned int dataY = 0;
+	static unsigned int dataZ = 0;
+	static unsigned int player = 0;
+	if (g_raceCondition == 1 && READU32(0x65DA44) > 0x14000000 && READU32(0x65DA44) < 0x18000000)
+	{
+		if (player > 8)
+		{
+			player = 0;
+		}
+		if (!is_pressed(Y))
+		{
+			tempActive = 0;
+		}
+		if (is_pressed(Y))
+		{
+			tempActive = 1;
+			if (is_pressed(DU))
+			{
+				active = 1;
+			}	
+			if (is_pressed(DD))
+			{
+				active = 0;
+			}
+		}
+		if (is_pressed(ST))
+		{
+			if (is_pressed(DU))
+			{
+				player++;
+			}
+			if (is_pressed(DD))
+			{
+				player--;
+			}
+		}
+		pointer = 0x209C + READU32(0x65DA44) + (player * 0x44);
+		if (READU32(pointer) == g_racePointer || READU32(pointer) == 0)
+		{
+			player++;
+			pointer = 0x209C + READU32(0x65DA44) + (player * 0x44);
+		}
+		if (player > 0 && player < 9 && READU32(pointer) > 0x14000000 && READU32(pointer) < 0x18000000)
+		{
+			if (active == 1 || tempActive == 1)
+			{
+				dataX = READU32(READU32(pointer) + 0x24);
+				dataY = READU32(READU32(pointer) + 0x28);
+				dataZ = READU32(READU32(pointer) + 0x2C);
+				if (dataX > 0x100 && dataY > 0x100 && dataZ > 0x100 && dataX < 0xD0000000 && dataY < 0xD0000000 && dataZ < 0xD0000000)
 				{
-					WRITEU32(g_racePointer + 0x3C, 0x41000000);
-				}
-				if (is_pressed(DD))
-				{
-					WRITEU32(g_racePointer + 0x3C, 0xC1000000);
+					WRITEU32(g_racePointer + 0x24, dataX);
+					WRITEU32(g_racePointer + 0x28, dataY);
+					WRITEU32(g_racePointer + 0x2C, dataZ);
 				}
 			}
 		}
@@ -551,7 +572,7 @@ void	blueShellRide(void)
 			dataX = READU32(READU32(READU32(0xFFFFBF4) - 0x63C) - 0x3CB0);
 			dataY = READU32(READU32(READU32(0xFFFFBF4) - 0x63C) - 0x3CAC);
 			dataZ = READU32(READU32(READU32(0xFFFFBF4) - 0x63C) - 0x3CA8);
-			if (dataX > 0x100000 && dataX < 0xD0000000 &&  dataY > 0x100000 && dataY < 0xD0000000 && dataZ > 0x100000 && dataZ < 0xD0000000)
+			if (dataX > 0x100 && dataX < 0xD0000000 &&  dataY > 0x100 && dataY < 0xD0000000 && dataZ > 0x100 && dataZ < 0xD0000000)
 			{
 				WRITEU32(g_racePointer + 0x24, dataX);
 				WRITEU32(g_racePointer + 0x28, dataY);
@@ -600,21 +621,10 @@ void	FiveHundredCC(void)
 
 /////////////////////////////////////////////////////////    Start of menu codes    /////////////////////////////////////////////////////////
 
-void	disableFirstPerson(void)
+void	disableFirstPersonView(void)
 {
-	unsigned int g_rev = GetRev();
-	if (g_rev == 0)
-	{
-		WRITEU8(0x147909D5, 0);
-	}
-	if (g_rev == 1)
-	{
-		WRITEU8(0x1478FDF5, 0);
-	}
-	if (g_rev == 2)
-	{
-		WRITEU8(0x14790415, 0);
-	}
+	offset = READU32(READU32(0x14000084) + 0x316C);
+	WRITEU8(offset + 0x119, 0);
 }
 
 void	vrExtender(void)

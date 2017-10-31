@@ -87,16 +87,17 @@ char	*builder_name = "DarkFlare";
 	static const char * const maxTimer_note = "The timer will freeze at 4:59.9xx.";
 	static const char * const waterEverywhere_note = "You will always be underwater.";
 	static const char * const noCountdown_note = "You will be able to drive when the countdown normally would be happening.";
-	static const char * const disableFirstPerson_note = "You will not be able to activate first person view by pressing Up on the D-Pad.";
+	static const char * const disableFirstPersonView_note = "You will not be able to activate first person view by pressing Up on the D-Pad.";
 	static const char * const NoDC_note = "You will not get disconnected unless the cause of the disconnection is an actual network problem.";
 	static const char * const vrExtender_note = "Start = 999999; Select = 420000; D-Pad Down = 0; D-Pad Up = 696969; D-Pad Right = 666666; D-Pad Left = 777777.";
 	static const char * const randomVR_note = "A random VR value will be generated.";
 	static const char * const unlockEverything_note = "Everything will be unlocked. After enabling, save the game by completing a time trial or something, exit the game, and open it again. At this point everything should be permanently unlocked.";
-	// remember to add notes here
+	static const char * const driveAnywhere_note = "Start = Disable; Select = Enable; Select + Up = Go Up; Select + Down = Go Down";
 
 void    my_menus(void)
 {
 	new_spoiler("Kart Codes");
+		//new_entry_with_note("Stalking Test", invincible_note, stalkingTest);
 		new_entry_with_note("Invincibility", invincible_note, invincible);
 		new_entry_with_note("Always Star Power", alwaysStarPower_note, alwaysStarPower);
 		new_entry_with_note("Always Black Kart", alwaysBlackKart_note, alwaysBlackKart);
@@ -111,6 +112,7 @@ void    my_menus(void)
 		new_entry_with_note("500cc", FiveHundredCC_note, FiveHundredCC);
 		new_entry_with_note("Fast Reverse Speeds", fastReverse_note, fastReverse);
 		new_entry_with_note("Moonjump (See Note)", moonjump_note, moonjump);
+		new_entry_with_note("Drive Anywhere (See Note)", driveAnywhere_note, driveAnywhere);
 		new_entry_with_note("Save Slot Teleporter (See Note)", saveSlotTeleporter_note, saveSlotTeleporter);
 	exit_spoiler();
 	
@@ -134,7 +136,7 @@ void    my_menus(void)
 	
 	new_spoiler("Menu & Unlock Codes");
 		new_entry_with_note("No Countdown", noCountdown_note, noCountdown);
-		new_entry_with_note("Disable First Person View", disableFirstPerson_note, disableFirstPerson);
+		new_entry_with_note("Disable First Person View", disableFirstPersonView_note, disableFirstPersonView);
 		new_entry_with_note("No Disconnect", NoDC_note, NoDC);
 		new_entry_with_note("VR Extender (See Note)", vrExtender_note, vrExtender);
 		new_entry_with_note("Random VR", randomVR_note, randomVR);
