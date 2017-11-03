@@ -18,8 +18,6 @@
     #define SUBTOUNSIGNED(addr, value)            *(u32 *)(addr) -= value
 #endif
 
-void	stalkingTest(void);
-
 unsigned int	GetRev(void);
 unsigned int	GetFNsPointer(void);
 unsigned int	GetRacePointer(void);
@@ -42,6 +40,7 @@ void	hugeBunnyhop(void);
 void	fastReverse(void);
 void	noCountdown(void);
 void	moonjump(void);
+void	stalking(void);
 void	saveSlotTeleporter(void);
 void	maxTimer(void);
 void	waterEverywhere(void);

@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include "hid.h"
 #include "values.h"
+#include <string.h>
 
 u32 offset = 0;
 u32 random = 0;
@@ -20,37 +21,11 @@ unsigned int g_oldRacePointer5CC;
 unsigned int g_oldRacePointer5D0;
 unsigned int g_itemPointer;
 
-/////////////////////////////////////////////////////////    Start of stability increasers    /////////////////////////////////////////////////////////
-
-unsigned int	GetRev(void)
-{
-	unsigned int g_rev;
-	if (READU32(READU32(0x14000084) + 0x316C) + 0x118 == 0x147909D4)
-	{
-		g_rev = 0; // rev0
-		return (g_rev);
-	}
-	if (READU32(READU32(0x14000084) + 0x316C) + 0x118 == 0x1478FDF4)
-	{
-		g_rev = 1; // rev1
-		return (g_rev);
-	}
-	if (READU32(READU32(0x14000084) + 0x316C) + 0x118 == 0x14790414)
-	{
-		g_rev = 2; // eur rev1
-		return (g_rev);
-	}
-	else
-	{
-		g_rev = 3; // don't execute code because it should always be one of these 3
-		return (g_rev);
-	}
-}
+/////////////////////////////////////////////////////////    Start of custom functions    /////////////////////////////////////////////////////////
 
 unsigned int	GetRacePointer(void)
 {
-	unsigned int g_racePointer;
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_racePointer, g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1 && READU32(0x140002F4) > 0x14000000 && READU32(0x140002F4) < 0x18000000 && READU32(READU32(0x140002F4) + 0x14) > 0x14000000 && READU32(READU32(0x140002F4) + 0x14) < 0x18000000 && READU32(READU32(READU32(0x140002F4) + 0x14) + 0x518) > 0x14000000 && READU32(READU32(READU32(0x140002F4) + 0x14) + 0x518) < 0x18000000)
 	{
 		g_racePointer = READU32(READU32(READU32(READU32(0x140002F4) + 0x14) + 0x518) + 0x1C);
@@ -80,8 +55,7 @@ unsigned int	GetRaceCondition(void)
 
 unsigned int	GetFNsPointer(void)
 {
-	unsigned int g_FNsPointer;
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_FNsPointer, g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1 && READU32(0xFFFF6F0) > 0x14000000 && READU32(0xFFFF6F0) < 0x18000000)
 	{
 		g_FNsPointer = READU32(0xFFFF6F0) + 8;
@@ -96,8 +70,7 @@ unsigned int	GetFNsPointer(void)
 
 unsigned int	GetOldPointer5CC(void)
 {
-	unsigned int g_oldRacePointer5CC;
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_oldRacePointer5CC, g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1 && READU32(0xFFFFBF4) > 0x14000000 && READU32(0xFFFFBF4) < 0x18000000 && READU32(READU32(0xFFFFBF4) + 0x5CC) > 0x14000000 && READU32(READU32(0xFFFFBF4) + 0x5CC) < 0x18000000)
 	{
 		g_oldRacePointer5CC = READU32(READU32(0xFFFFBF4) + 0x5CC);
@@ -112,8 +85,7 @@ unsigned int	GetOldPointer5CC(void)
 
 unsigned int	GetOldPointer5D0(void)
 {
-	unsigned int g_oldRacePointer5D0;
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_oldRacePointer5D0, g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1 && READU32(0xFFFFBF4) > 0x14000000 && READU32(0xFFFFBF4) < 0x18000000 && READU32(READU32(0xFFFFBF4) + 0x5D0) > 0x14000000 && READU32(READU32(0xFFFFBF4) + 0x5D0) < 0x18000000)
 	{
 		g_oldRacePointer5D0 = READU32(READU32(0xFFFFBF4) + 0x5D0);
@@ -128,8 +100,7 @@ unsigned int	GetOldPointer5D0(void)
 
 unsigned int	GetItemPointer(void)
 {
-	unsigned int g_itemPointer;
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_itemPointer, g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1)
 	{
 		if (READU32(0x17782494) > 0x14000000 || READU32(0x177BE494) > 0x14000000)
@@ -150,8 +121,7 @@ unsigned int	GetItemPointer(void)
 
 void	writeItem(u32 item)
 {
-	unsigned int g_raceCondition = GetRaceCondition();
-	unsigned int g_itemPointer = GetItemPointer();
+	unsigned int g_raceCondition = GetRaceCondition(), g_itemPointer = GetItemPointer();
 	if (g_raceCondition == 1 && g_itemPointer > 0x14000000 && g_itemPointer < 0x18000000)
 	{
 		WRITEU32(0x3C + g_itemPointer, 0xFFFFFFFF);
@@ -175,7 +145,7 @@ void	writeSpeed(u32 speed)
 }
 			
 
-/* void	writeSpeed(u32 speed)
+/* void	writeSpeed(u32 speed) // decrepit 
 {
 	unsigned int g_rev = GetRev();
 	if (g_rev == 0)
@@ -238,8 +208,7 @@ void	writeFlag(u8 flag)
 
 void	invincible(void)
 {
-	unsigned int g_racePointer = GetRacePointer();
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1)
 	{
 		if ((g_racePointer > 0x15000000) && (g_racePointer < 0x18000000))
@@ -251,8 +220,7 @@ void	invincible(void)
 
 void	alwaysStarPower(void)
 {
-	unsigned int g_racePointer = GetRacePointer();
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1)
 	{
 		if ((g_racePointer > 0x15000000) && (g_racePointer < 0x18000000))
@@ -264,8 +232,7 @@ void	alwaysStarPower(void)
 
 void	alwaysBlackKart(void)
 {
-	unsigned int g_racePointer = GetRacePointer();
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1)
 	{
 		if ((g_racePointer > 0x15000000) && (g_racePointer < 0x18000000))
@@ -277,8 +244,7 @@ void	alwaysBlackKart(void)
 
 void	alwaysShocked(void)
 {
-	unsigned int g_racePointer = GetRacePointer();
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1)
 	{
 		if ((g_racePointer > 0x15000000) && (g_racePointer < 0x18000000))
@@ -290,8 +256,7 @@ void	alwaysShocked(void)
 
 void	alwaysCrushed(void)
 {
-	unsigned int g_racePointer = GetRacePointer();
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1)
 	{
 		if ((g_racePointer > 0x15000000) && (g_racePointer < 0x18000000))
@@ -329,8 +294,7 @@ void	noCountdown(void)
 
 void	moonjump(void)
 {
-	unsigned int g_racePointer = GetRacePointer();
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
 	if (is_pressed(ST + R))
 	{
 		if (g_raceCondition == 1)
@@ -342,11 +306,8 @@ void	moonjump(void)
 
 void	saveSlotTeleporter(void)
 {
-	static u32 x = 0;
-	static u32 y = 0;
-	static u32 z = 0;
-	unsigned int g_racePointer = GetRacePointer();
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
+	static u32 x = 0, y = 0, z = 0;
 	if (g_raceCondition == 1)
 	{
 		if (is_pressed(ST + X))
@@ -393,8 +354,7 @@ void	waterEverywhere(void)
 
 void	driveAnywhere(void)
 {
-	unsigned int g_raceCondition = GetRaceCondition();
-	unsigned int g_racePointer = GetRacePointer();
+	unsigned int g_raceCondition = GetRaceCondition(), g_racePointer = GetRacePointer();
 	static unsigned int data = 0;
 	if (g_raceCondition != 1)
 	{
@@ -428,26 +388,24 @@ void	driveAnywhere(void)
 	}
 }
 
-void	stalkingTest(void)
+void	stalking(void) // could optimize a little more
 {
-	unsigned int g_racePointer = GetRacePointer();
-	unsigned int g_raceCondition = GetRaceCondition();
-	static unsigned int tempActive = 0;
-	static unsigned int pointer = 0;
-	static unsigned int active = 0;
-	static unsigned int dataX = 0;
-	static unsigned int dataY = 0;
-	static unsigned int dataZ = 0;
-	static unsigned int player = 0;
-	if (g_raceCondition == 1 && READU32(0x65DA44) > 0x14000000 && READU32(0x65DA44) < 0x18000000)
+	unsigned int g_raceCondition = GetRaceCondition(), g_racePointer = GetRacePointer(), tempActive = 0;
+	static unsigned int pointer = 0, active = 0, player = 1;
+	float dataY = 0, dataZ = 0;
+	static bool held = false;
+	if (g_raceCondition != 1)
 	{
-		if (player > 8)
-		{
-			player = 0;
-		}
+		player = 1;
+		active = 0;
+		pointer = 0;
+		return;
+	}
+	if (g_raceCondition == 1)
+	{
 		if (!is_pressed(Y))
 		{
-			tempActive = 0;
+			held = false;
 		}
 		if (is_pressed(Y))
 		{
@@ -459,42 +417,73 @@ void	stalkingTest(void)
 			if (is_pressed(DD))
 			{
 				active = 0;
+				player = 1;
+			}
+			if (!held)
+			{
+				if (is_pressed(DR))
+				{
+					held = true;
+					player++;
+				}
+				if (is_pressed(DL))
+				{
+					held = true;
+					player--;
+				}
 			}
 		}
-		if (is_pressed(ST))
+		if (active == 1 || tempActive == 1)
 		{
-			if (is_pressed(DU))
+			if (player > 8 || player < 1)
+			{
+				player = 1;
+				return;
+			}
+			pointer = 0x209C + READU32(0x65DA44) + (player * 0x44);
+			if (READU32(pointer) < 0x14000000 || READU32(pointer) > 0x18000000 || READU32(pointer) == g_racePointer || READU32(READU32(pointer) + 0x24) < 0x30000000 || READU32(READU32(pointer) + 0x24) > 0xD0000000 || READU32(READU32(pointer) + 0x2C) < 0x30000000 || READU32(READU32(pointer) + 0x2C) > 0xD0000000)
 			{
 				player++;
+				return;
 			}
-			if (is_pressed(DD))
+			if (player > 0 && player < 9 && READU32(pointer) > 0x14000000 && READU32(pointer) < 0x18000000 && g_racePointer > 0x14000000 && g_racePointer < 0x18000000)
 			{
-				player--;
-			}
-		}
-		pointer = 0x209C + READU32(0x65DA44) + (player * 0x44);
-		if (READU32(pointer) == g_racePointer || READU32(pointer) == 0)
-		{
-			player++;
-			pointer = 0x209C + READU32(0x65DA44) + (player * 0x44);
-		}
-		if (player > 0 && player < 9 && READU32(pointer) > 0x14000000 && READU32(pointer) < 0x18000000)
-		{
-			if (active == 1 || tempActive == 1)
-			{
-				dataX = READU32(READU32(pointer) + 0x24);
-				dataY = READU32(READU32(pointer) + 0x28);
-				dataZ = READU32(READU32(pointer) + 0x2C);
-				if (dataX > 0x100 && dataY > 0x100 && dataZ > 0x100 && dataX < 0xD0000000 && dataY < 0xD0000000 && dataZ < 0xD0000000)
+				dataY = READFLOAT(READU32(pointer) + 0x28);
+				dataY += 38;
+				dataZ = READFLOAT(READU32(pointer) + 0x2C);
+				if (dataY != 0 && dataY != 38 && dataZ != 0)
 				{
-					WRITEU32(g_racePointer + 0x24, dataX);
-					WRITEU32(g_racePointer + 0x28, dataY);
-					WRITEU32(g_racePointer + 0x2C, dataZ);
+					memcpy((void *)(g_racePointer), (void*)(READU32(pointer)), 0x28);
+					WRITEFLOAT(g_racePointer + 0x28, dataY);
+					WRITEFLOAT(g_racePointer + 0x2C, dataZ);
+				}
+				else
+				{
+					player++;
 				}
 			}
 		}
 	}
 }
+
+// void	cpuBrawl(void) // untested
+// {
+	// int pointer = 0;
+	// int pointer2 = 0;
+	// for (int player = 1; player < 9; player++)
+	// {
+		// if (READU32((0x209C + READU32(0x65DA44) + (player * 0x44))) > 0x14000000 && (READU32(0x209C + READU32(0x65DA44) + (player * 0x44))) < 0x14000000)
+		// {
+			// pointer = 0x209C + READU32(0x65DA44) + (player * 0x44);
+			// if (READU32((0x209C + READU32(0x65DA44) + ((player + 1) * 0x44))) > 0x14000000 && (READU32(0x209C + READU32(0x65DA44) + ((player + 1) * 0x44))) < 0x14000000)
+			// {
+				// pointer2 = 0x209C + READU32(0x65DA44) + ((player + 1) * 0x44);
+				// memcpy((void *)(pointer), (void*)(pointer2), 0x30);
+			// }
+		// }
+	// }
+// }
+				
 
 /////////////////////////////////////////////////////////    Start of item codes    /////////////////////////////////////////////////////////
 
@@ -520,8 +509,7 @@ void	stoppedGreenShell(void)
 
 void	dropMushrooms(void)
 {
-	unsigned int g_oldRacePointer5D0 = GetOldPointer5D0();
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_oldRacePointer5D0 = GetOldPointer5D0(), g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1 && g_oldRacePointer5D0 > 0x14000000 && g_oldRacePointer5D0 < 0x18000000)
 	{
 		WRITEU32(g_oldRacePointer5D0 + 0x1D0, READU32(g_oldRacePointer5D0 + 0x1F8));
@@ -530,8 +518,7 @@ void	dropMushrooms(void)
 
 void	bulletControl(void)
 {
-	unsigned int g_raceCondition = GetRaceCondition();
-	unsigned int g_racePointer = GetRacePointer();
+	unsigned int g_raceCondition = GetRaceCondition(), g_racePointer = GetRacePointer();
 	if (g_raceCondition == 1 && g_racePointer > 0x14000000 && g_racePointer < 0x18000000)
 	{
 		WRITEU8(g_racePointer + 0xC32, 64);
@@ -540,8 +527,7 @@ void	bulletControl(void)
 
 void	disableStarMusic(void)
 {
-	unsigned int g_FNsPointer = GetFNsPointer();
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_FNsPointer = GetFNsPointer(), g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1 && g_FNsPointer > 0x14000000 && g_FNsPointer < 0x18000000 && READU8(g_FNsPointer + 0x1F7) == 1)
 	{
 		WRITEU8(g_FNsPointer + 0x1F7, 0);
@@ -560,11 +546,7 @@ void	bulletSpeed(void)
 
 void	blueShellRide(void)
 {
-	u32 dataX = 0;
-	u32 dataY = 0;
-	u32 dataZ = 0;
-	unsigned int g_raceCondition = GetRaceCondition();
-	unsigned int g_racePointer = GetRacePointer();
+	unsigned int dataX = 0, dataY = 0, dataZ = 0, g_raceCondition = GetRaceCondition(), g_racePointer = GetRacePointer();
 	if (is_pressed(DL))
 	{
 		if (g_raceCondition == 1 && READU32(0xFFFFBF4) > 0x14000000 && READU32(0xFFFFBF4) < 0x18000000 && READU32(READU32(0xFFFFBF4) - 0x63C) > 0x14000000 && READU32(READU32(0xFFFFBF4) - 0x63C) < 0x18000000)
@@ -584,8 +566,7 @@ void	blueShellRide(void)
 
 void	itemWheel(void)
 {
-	unsigned int g_raceCondition = GetRaceCondition();
-	unsigned int g_itemPointer = GetItemPointer();
+	unsigned int g_raceCondition = GetRaceCondition(), g_itemPointer = GetItemPointer();
 	if (g_raceCondition == 1 && g_itemPointer > 0x14000000 && g_itemPointer < 0x18000000)
 	{
 		if (is_pressed(X))
@@ -623,7 +604,7 @@ void	FiveHundredCC(void)
 
 void	disableFirstPersonView(void)
 {
-	offset = READU32(READU32(0x14000084) + 0x316C);
+	offset = READU32(READU32(0x14000084) + 0x316C); // for some reason this doesn't work when it's reduced to one line...
 	WRITEU8(offset + 0x119, 0);
 }
 
@@ -660,7 +641,7 @@ void	vrExtender(void)
 
 void	randomVR(void)
 {
-	u32 random = 0;
+	unsigned int random = 0;
 	if (READU16(0x14296A90) > 20000 && READU16(0x14296A90) < 200000)
 	{
 		random = READU16(0x14296A90) * 5;
@@ -687,8 +668,7 @@ void	unlockEverything(void)
 
 void	NoDC(void)
 {
-	unsigned int g_oldRacePointer5CC = GetOldPointer5CC();
-	unsigned int g_raceCondition = GetRaceCondition();
+	unsigned int g_oldRacePointer5CC = GetOldPointer5CC(), g_raceCondition = GetRaceCondition();
 	if (g_raceCondition == 1 && g_oldRacePointer5CC > 0x14000000 && g_oldRacePointer5CC < 0x18000000)
 	{
 		WRITEU8(g_oldRacePointer5CC + 0x40, 2);

@@ -72,32 +72,32 @@ char	*builder_name = "DarkFlare";
 	static const char * const TwoHundredCC_note = "You will go 200cc speeds. Restart the race after applying the code for the effect to take place.";
 	static const char * const FiveHundredCC_note = "You will go 500cc speeds. Restart the race after applying the code for the effect to take place.";
 	static const char * const fastReverse_note = "You will reverse at higher speeds than before when holding B.";
-	static const char * const moonjump_note = "Start + R = Enable.";
-	static const char * const saveSlotTeleporter_note = "Start + X = Save Current Position; Start + Y = Load Saved Position.";
-	static const char * const itemWheel_note = "X = Bullet; Y = Tanooki; Start = Blue Shell; Select = Lightning; D-Pad Left = Lucky 7; D-Pad Right = Red Shell; D-Pad Up = Green Shell; D-Pad Down = Bob-Omb.";
+	static const char * const moonjump_note = "-Start + R = Enable";
+	static const char * const saveSlotTeleporter_note = "-Start + X = Save Current Position\n-Start + Y = Load Saved Position";
+	static const char * const itemWheel_note = "-X = Bullet\n-Y = Tanooki\n-Start = Blue Shell\n-Select = Lightning\n-D-Pad Left = Lucky 7\n-D-Pad Right = Red Shell\n-D-Pad Up = Green Shell\n-D-Pad Down = Bob-Omb";
 	static const char * const dropMushrooms_note = "This code replaces green shells with droppable mushrooms. Throw a 'green shell' to drop a mushroom.";
 	static const char * const fastBlueShell_note = "Blue shells will go very fast.";
 	static const char * const stoppedBlueShell_note = "Blue shells will not move after being thrown.";
 	static const char * const fastGreenShell_note = "Green shells will go very fast.";
 	static const char * const stoppedGreenShell_note = "Green shells will not move after being thrown.";
 	static const char * const bulletControl_note = "You will be able to control your bullets."; // make sure to update this after adding controls to bullet
-	static const char * const bulletSpeed_note = "X = Very Fast; B = Stopped; A = Normal Speed.";
-	static const char * const blueShellRide_note = "D-Pad Left = Enable. You will warp to a blue shell and ride it.";
+	static const char * const bulletSpeed_note = "-X = Very Fast\n-B = Stopped\n-A = Normal Speed";
+	static const char * const blueShellRide_note = "-D-Pad Left = Enable\nYou will warp to a blue shell and ride it.";
 	static const char * const disableStarMusic_note = "The star music won't play when you're in a star.";
 	static const char * const maxTimer_note = "The timer will freeze at 4:59.9xx.";
 	static const char * const waterEverywhere_note = "You will always be underwater.";
 	static const char * const noCountdown_note = "You will be able to drive when the countdown normally would be happening.";
 	static const char * const disableFirstPersonView_note = "You will not be able to activate first person view by pressing Up on the D-Pad.";
 	static const char * const NoDC_note = "You will not get disconnected unless the cause of the disconnection is an actual network problem.";
-	static const char * const vrExtender_note = "Start = 999999; Select = 420000; D-Pad Down = 0; D-Pad Up = 696969; D-Pad Right = 666666; D-Pad Left = 777777.";
+	static const char * const vrExtender_note = "-Start = 999999\n-Select = 420000\n-D-Pad Down = 0\n-D-Pad Up = 696969\n-D-Pad Right = 666666\n-D-Pad Left = 777777";
 	static const char * const randomVR_note = "A random VR value will be generated.";
 	static const char * const unlockEverything_note = "Everything will be unlocked. After enabling, save the game by completing a time trial or something, exit the game, and open it again. At this point everything should be permanently unlocked.";
-	static const char * const driveAnywhere_note = "Start = Disable; Select = Enable; Select + Up = Go Up; Select + Down = Go Down";
+	static const char * const driveAnywhere_note = "-Start = Disable\n-Select = Enable\n-Select + Up = Go Up\n-Select + Down = Go Down";
+	static const char * const stalking_note = "-Y + Right = Increase\n-Y + Left = Decrease\n-Y + Up = Stalk the player until code is disabled\n-Hold Y to stalk the player temporarily, release Y to stop stalking\n-Y + Down = Disable Code";
 
 void    my_menus(void)
 {
 	new_spoiler("Kart Codes");
-		//new_entry_with_note("Stalking Test", invincible_note, stalkingTest);
 		new_entry_with_note("Invincibility", invincible_note, invincible);
 		new_entry_with_note("Always Star Power", alwaysStarPower_note, alwaysStarPower);
 		new_entry_with_note("Always Black Kart", alwaysBlackKart_note, alwaysBlackKart);
@@ -111,6 +111,7 @@ void    my_menus(void)
 		new_entry_with_note("200cc", TwoHundredCC_note, TwoHundredCC);
 		new_entry_with_note("500cc", FiveHundredCC_note, FiveHundredCC);
 		new_entry_with_note("Fast Reverse Speeds", fastReverse_note, fastReverse);
+		new_entry_with_note("Stalking Hack (See Note)", stalking_note, stalking);
 		new_entry_with_note("Moonjump (See Note)", moonjump_note, moonjump);
 		new_entry_with_note("Drive Anywhere (See Note)", driveAnywhere_note, driveAnywhere);
 		new_entry_with_note("Save Slot Teleporter (See Note)", saveSlotTeleporter_note, saveSlotTeleporter);
