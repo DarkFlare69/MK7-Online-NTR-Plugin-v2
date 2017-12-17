@@ -36,7 +36,13 @@ https://youtu.be/is_H5CkzBJo
 # Credits
 
 DarkFlare69 - Codes, plugin, & media
+
 Nanquitas - libShark2NTR & plugin help
+
 RyDog - Plugin help (notes, original blank cheat menu)
+
 Mega-Mew - Codes
+
+Anto726 - Codes
+
 MrN0P93 - Codes
