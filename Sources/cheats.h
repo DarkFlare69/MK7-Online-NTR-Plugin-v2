@@ -6,6 +6,7 @@
 #ifndef ADDSUBFLOAT
     #define ADDTOFLOAT(addr, add_value)            *(float *)(addr) += (float)(add_value)
     #define SUBTOFLOAT(addr, sub_value)            *(float *)(addr) -= (float)(sub_value)
+	#define MULTOFLOAT(addr, mul_value)            *(float *)(addr) *= (float)(mul_value)
 #endif
 
 #ifndef READWRITEFLOAT
@@ -41,6 +42,8 @@ void	fastReverse(void);
 void	noCountdown(void);
 void	moonjump(void);
 void	stalking(void);
+//void	cpuBrawl(void);
+void	TouchCode(void);
 void	saveSlotTeleporter(void);
 void	maxTimer(void);
 void	waterEverywhere(void);

@@ -48,7 +48,7 @@ unsigned int	GetRaceCondition(void)
 	}
 	else
 	{
-		g_raceCondition = 0;
+		g_raceCondition = 2;
 		return (g_raceCondition);
 	}
 }
@@ -143,43 +143,10 @@ void	writeSpeed(u32 speed)
 		}
 	}
 }
-			
-
-/* void	writeSpeed(u32 speed) // decrepit 
-{
-	unsigned int g_rev = GetRev();
-	if (g_rev == 0)
-	{
-		for (int i = 0; i < 0x2D; i++)
-		{
-			WRITEU32(0x153771F0 + (i * 4), speed);
-			WRITEU32(0x1537A710 + (i * 4), speed);
-			WRITEU32(0x15386E70 + (i * 4), speed);
-		}
-	}
-	if (g_rev == 1)
-	{
-		for (int i = 0; i < 0x2D; i++)
-		{
-			WRITEU32(0x153765F0 + (i * 4), speed);
-			WRITEU32(0x15379B10 + (i * 4), speed);
-			WRITEU32(0x15386270 + (i * 4), speed);
-		}
-	}
-	if (g_rev == 2)
-	{
-		for (int i = 0; i < 0x2D; i++)
-		{
-			WRITEU32(0x15376C70 + (i * 4), speed);
-			WRITEU32(0x1537A190 + (i * 4), speed);
-			WRITEU32(0x153868F0 + (i * 4), speed);
-		}
-	}
-} */
 
 void	writeVR(u32 vr)
 {
-	if (READU32(0x663D04) > 0x100000)
+	if (READU32(0x663D04) > 0x10000000)
 	{
 		WRITEU32(READU32(0x663D04) - 0xE30, vr);
 	}
@@ -187,7 +154,7 @@ void	writeVR(u32 vr)
 
 void	writeLocation(u32 location)
 {
-	if (READU32(0x6673C8) != 0)
+	if (READU32(0x6673C8) > 0x10000000)
 	{
 		offset = READU32(0x6673C8);
 		WRITEU32(offset + 0xF7CC, location);
@@ -196,7 +163,7 @@ void	writeLocation(u32 location)
 
 void	writeFlag(u8 flag)
 {
-	if (READU32(0x6673C8) != 0)
+	if (READU32(0x6673C8) > 0x10000000)
 	{
 		offset = READU32(0x6673C8);
 		WRITEU8(offset + 0xE7CA, flag);
@@ -449,9 +416,9 @@ void	stalking(void) // could optimize a little more
 			if (player > 0 && player < 9 && READU32(pointer) > 0x14000000 && READU32(pointer) < 0x18000000 && g_racePointer > 0x14000000 && g_racePointer < 0x18000000)
 			{
 				dataY = READFLOAT(READU32(pointer) + 0x28);
-				dataY += 38;
+				dataY += 40;
 				dataZ = READFLOAT(READU32(pointer) + 0x2C);
-				if (dataY != 0 && dataY != 38 && dataZ != 0)
+				if (dataY != 0 && dataY != 40 && dataZ != 0)
 				{
 					memcpy((void *)(g_racePointer), (void*)(READU32(pointer)), 0x28);
 					WRITEFLOAT(g_racePointer + 0x28, dataY);
@@ -466,24 +433,43 @@ void	stalking(void) // could optimize a little more
 	}
 }
 
-// void	cpuBrawl(void) // untested
-// {
-	// int pointer = 0;
-	// int pointer2 = 0;
-	// for (int player = 1; player < 9; player++)
-	// {
-		// if (READU32((0x209C + READU32(0x65DA44) + (player * 0x44))) > 0x14000000 && (READU32(0x209C + READU32(0x65DA44) + (player * 0x44))) < 0x14000000)
-		// {
-			// pointer = 0x209C + READU32(0x65DA44) + (player * 0x44);
-			// if (READU32((0x209C + READU32(0x65DA44) + ((player + 1) * 0x44))) > 0x14000000 && (READU32(0x209C + READU32(0x65DA44) + ((player + 1) * 0x44))) < 0x14000000)
-			// {
-				// pointer2 = 0x209C + READU32(0x65DA44) + ((player + 1) * 0x44);
-				// memcpy((void *)(pointer), (void*)(pointer2), 0x30);
-			// }
-		// }
-	// }
-// }
-				
+/* void	cpuBrawl(void) // untested
+{
+	int pointer = 0;
+	int pointer2 = 0;
+	for (int i = 1; i < 6; i++)
+	{
+		pointer = 0x209C + READU32(0x65DA44) + (i * 0x44);
+		pointer2 = pointer + 0x44;
+		memcpy((void *)(READU32(pointer)), (void*)(READU32(pointer)), 0x30);
+	}
+} */
+
+void	TouchCode(void)
+{
+	unsigned int g_raceCondition = GetRaceCondition(), g_racePointer = GetRacePointer();
+	if (READU32(READU32(0x6789C8) + 0x1A48) == 1 && g_raceCondition == 1 && g_racePointer > 0x16000000 && g_racePointer < 0x18000000)
+	{
+		unsigned int touch_pointer = *(unsigned int *)0x6789C8;
+		float X_Axis = *(float *)(touch_pointer + 0x1BCC);
+		float Y_Axis = *(float *)(touch_pointer + 0x1BD0);
+		float MapStatic1 = READFLOAT(READU32(READU32(READU32(READU32(READU32(READU32(0x140002F4) + 0x14) + 0x370) + 0x270) + 0x60) + 0x688) + 0);
+		float Map_Scale1 = READFLOAT(READU32(READU32(READU32(READU32(READU32(READU32(0x140002F4) + 0x14) + 0x370) + 0x270) + 0x60) + 0x688) + 4);
+		float MapStatic2 = READFLOAT(READU32(READU32(READU32(READU32(READU32(READU32(0x140002F4) + 0x14) + 0x370) + 0x270) + 0x60) + 0x688) + 8);
+		float Map_Scale2 = READFLOAT(READU32(READU32(READU32(READU32(READU32(READU32(0x140002F4) + 0x14) + 0x370) + 0x270) + 0x60) + 0x688) + 12);
+		Map_Scale1 -= Map_Scale2;
+		Map_Scale1 /= 240.f;
+		X_Axis *= Map_Scale1;
+		Y_Axis *= Map_Scale1;
+		float Z = ((320.f * Map_Scale1) - (MapStatic1 + MapStatic2));
+		X_Axis -= (Z + MapStatic1);
+		// for reference :   https://i.imgur.com/kjk0e11.png
+		Y_Axis += Map_Scale2;
+		*(float *)(g_racePointer + 0x3C) = 0;
+		*(float *)(g_racePointer + 0x24) = X_Axis;
+		*(float *)(g_racePointer + 0x2C) = Y_Axis;
+	}
+}
 
 /////////////////////////////////////////////////////////    Start of item codes    /////////////////////////////////////////////////////////
 
@@ -554,7 +540,7 @@ void	blueShellRide(void)
 			dataX = READU32(READU32(READU32(0xFFFFBF4) - 0x63C) - 0x3CB0);
 			dataY = READU32(READU32(READU32(0xFFFFBF4) - 0x63C) - 0x3CAC);
 			dataZ = READU32(READU32(READU32(0xFFFFBF4) - 0x63C) - 0x3CA8);
-			if (dataX > 0x100 && dataX < 0xD0000000 &&  dataY > 0x100 && dataY < 0xD0000000 && dataZ > 0x100 && dataZ < 0xD0000000)
+			if (dataX > 0x1000 && dataX < 0xD0000000 &&  dataY > 0x1000 && dataY < 0xD0000000 && dataZ > 0x1000 && dataZ < 0xD0000000)
 			{
 				WRITEU32(g_racePointer + 0x24, dataX);
 				WRITEU32(g_racePointer + 0x28, dataY);
@@ -610,7 +596,7 @@ void	disableFirstPersonView(void)
 
 void	vrExtender(void)
 {
-	if (READU32(0x663D04) > 0x100000)
+	if (READU32(0x663D04) > 0x10000000)
 	{
 		if(is_pressed(ST))
 		{

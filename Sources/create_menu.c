@@ -94,6 +94,7 @@ char	*builder_name = "DarkFlare";
 	static const char * const unlockEverything_note = "Everything will be unlocked. After enabling, save the game by completing a time trial or something, exit the game, and open it again. At this point everything should be permanently unlocked.";
 	static const char * const driveAnywhere_note = "-Start = Disable\n-Select = Enable\n-Select + Up = Go Up\n-Select + Down = Go Down";
 	static const char * const stalking_note = "-Y + Right = Increase\n-Y + Left = Decrease\n-Y + Up = Stalk the player until code is disabled\n-Hold Y to stalk the player temporarily, release Y to stop stalking\n-Y + Down = Disable Code";
+	static const char * const TouchCode_note = "Touch the bottom screen or drag your stylus across it to warp your kart to that position on the map!";
 
 void    my_menus(void)
 {
@@ -112,6 +113,7 @@ void    my_menus(void)
 		new_entry_with_note("500cc", FiveHundredCC_note, FiveHundredCC);
 		new_entry_with_note("Fast Reverse Speeds", fastReverse_note, fastReverse);
 		new_entry_with_note("Stalking Hack (See Note)", stalking_note, stalking);
+		new_entry_with_note("Touch Screen Teleporter", TouchCode_note, TouchCode);
 		new_entry_with_note("Moonjump (See Note)", moonjump_note, moonjump);
 		new_entry_with_note("Drive Anywhere (See Note)", driveAnywhere_note, driveAnywhere);
 		new_entry_with_note("Save Slot Teleporter (See Note)", saveSlotTeleporter_note, saveSlotTeleporter);
@@ -131,6 +133,7 @@ void    my_menus(void)
 	exit_spoiler();
 	
 	new_spoiler("Course Codes");
+		//new_entry_with_note("CPU Brawl", invincible_note, cpuBrawl); // this code hasn't been tested
 		new_entry_with_note("Max Timer", maxTimer_note, maxTimer);
 		new_entry_with_note("Water Everywhere", waterEverywhere_note, waterEverywhere);
 	exit_spoiler();
