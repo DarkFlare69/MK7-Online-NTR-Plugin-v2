@@ -453,17 +453,16 @@ void	TouchCode(void)
 		unsigned int touch_pointer = *(unsigned int *)0x6789C8;
 		float X_Axis = *(float *)(touch_pointer + 0x1BCC);
 		float Y_Axis = *(float *)(touch_pointer + 0x1BD0);
-		float MapStatic1 = READFLOAT(READU32(READU32(READU32(READU32(READU32(READU32(0x140002F4) + 0x14) + 0x370) + 0x270) + 0x60) + 0x688) + 0);
-		float Map_Scale1 = READFLOAT(READU32(READU32(READU32(READU32(READU32(READU32(0x140002F4) + 0x14) + 0x370) + 0x270) + 0x60) + 0x688) + 4);
-		float MapStatic2 = READFLOAT(READU32(READU32(READU32(READU32(READU32(READU32(0x140002F4) + 0x14) + 0x370) + 0x270) + 0x60) + 0x688) + 8);
-		float Map_Scale2 = READFLOAT(READU32(READU32(READU32(READU32(READU32(READU32(0x140002F4) + 0x14) + 0x370) + 0x270) + 0x60) + 0x688) + 12);
+		unsigned int map_pointer = READU32(READU32(READU32(READU32(READU32(READU32(0x140002F4) + 0x14) + 0x370) + 0x270) + 0x60) + 0x688);
+		float MapStatic1 = *(float *)map_pointer;
+		float Map_Scale1 = *(float *)(map_pointer + 4);
+		float MapStatic2 = *(float *)(map_pointer + 8);
+		float Map_Scale2 = *(float *)(map_pointer + 12);
 		Map_Scale1 -= Map_Scale2;
 		Map_Scale1 /= 240.f;
 		X_Axis *= Map_Scale1;
 		Y_Axis *= Map_Scale1;
-		float Z = ((320.f * Map_Scale1) - (MapStatic1 + MapStatic2));
-		X_Axis -= (Z + MapStatic1);
-		// for reference :   https://i.imgur.com/kjk0e11.png
+		X_Axis -= ((320.f * Map_Scale1) - MapStatic2);
 		Y_Axis += Map_Scale2;
 		*(float *)(g_racePointer + 0x3C) = 0;
 		*(float *)(g_racePointer + 0x24) = X_Axis;
