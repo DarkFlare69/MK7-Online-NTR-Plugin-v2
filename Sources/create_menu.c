@@ -95,7 +95,8 @@ char	*builder_name = "DarkFlare";
 	static const char * const driveAnywhere_note = "-Start = Disable\n-Select = Enable\n-Select + Up = Go Up\n-Select + Down = Go Down";
 	static const char * const stalking_note = "-Y + Right = Increase\n-Y + Left = Decrease\n-Y + Up = Stalk the player until code is disabled\n-Hold Y to stalk the player temporarily, release Y to stop stalking\n-Y + Down = Disable Code";
 	static const char * const TouchCode_note = "Touch the bottom screen or drag your stylus across it to warp your kart to that position on the map!";
-
+	static const char * const fastGame_note = "The game will move at a very fast speed. Unstable, use at your own risk!";
+	
 void    my_menus(void)
 {
 	new_spoiler("Kart Codes");
@@ -142,6 +143,7 @@ void    my_menus(void)
 		new_entry_with_note("No Countdown", noCountdown_note, noCountdown);
 		new_entry_with_note("Disable First Person View", disableFirstPersonView_note, disableFirstPersonView);
 		new_entry_with_note("No Disconnect", NoDC_note, NoDC);
+		new_entry_with_note("Fast Game/Anti-Matrix", fastGame_note, fastGame);
 		new_entry_with_note("VR Extender (See Note)", vrExtender_note, vrExtender);
 		new_entry_with_note("Random VR", randomVR_note, randomVR);
 		new_entry_with_note("Unlock Everything", unlockEverything_note, unlockEverything);

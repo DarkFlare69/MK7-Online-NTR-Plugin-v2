@@ -65,6 +65,7 @@ void	vrExtender(void);
 void	randomVR(void);
 void	unlockEverything(void);
 void	NoDC(void);
+void	fastGame(void);
 void	region_France(void);
 void	region_Hawaii(void);
 void	region_UpperAntartica(void);

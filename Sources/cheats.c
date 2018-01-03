@@ -660,6 +660,14 @@ void	NoDC(void)
 	}
 }
 
+void	fastGame(void)
+{
+	if (READU32(0x140002F4) > 0x14000000 && READU32(0x140002F4) < 0x18000000)
+	{
+		WRITEU32(READU32(READU32(0x140002F4) + 0x14) + 0x2B4, 0);
+	}
+}
+
 /////////////////////////////////////////////////////////    Start of region & flag codes    /////////////////////////////////////////////////////////
 
 void	region_France(void)
