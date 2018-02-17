@@ -83,4 +83,5 @@ static inline int lower_right_touched(void)
             return (1);
     return (0);
 }
+
 #endif

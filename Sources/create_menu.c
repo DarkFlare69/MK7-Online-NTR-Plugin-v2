@@ -96,7 +96,10 @@ char	*builder_name = "DarkFlare";
 	static const char * const stalking_note = "-Y + Right = Increase\n-Y + Left = Decrease\n-Y + Up = Stalk the player until code is disabled\n-Hold Y to stalk the player temporarily, release Y to stop stalking\n-Y + Down = Disable Code";
 	static const char * const TouchCode_note = "Touch the bottom screen or drag your stylus across it to warp your kart to that position on the map!";
 	static const char * const fastGame_note = "The game will move at a very fast speed. Unstable, use at your own risk!";
-	
+	static const char * const eliminationMode_note = "Every 30 seconds, the player in last place will be eliminated. The last player standing wins! This mode works best in rooms with more players.";
+	static const char * const tagMode_note = "One player will be 'it' and they have to try and tag another player by running into them! You will lose points the longer you are 'it' and also gain points for not being 'it'. The tagged person can will always be in a star.";
+	static const char * const shineTheif_note = "One player will start off with the 'shine' and they have to protect it from other people, who will try to steal it by running into the player with the shine! You will gain points the longer you have the shine. The person with the shine will always be in a star.\nD-Pad Left = Use Gained Boost";
+
 void    my_menus(void)
 {
 	new_spoiler("Kart Codes");
@@ -147,6 +150,12 @@ void    my_menus(void)
 		new_entry_with_note("VR Extender (See Note)", vrExtender_note, vrExtender);
 		new_entry_with_note("Random VR", randomVR_note, randomVR);
 		new_entry_with_note("Unlock Everything", unlockEverything_note, unlockEverything);
+	exit_spoiler();
+	
+	new_spoiler("Custom Game Modes");
+		new_entry_with_note("Shine Thief", shineTheif_note, shineTheif);
+		//new_entry_with_note("Tag", tagMode_note, tagMode);
+		new_entry_with_note("Elimination Mode", eliminationMode_note, eliminationMode);
 	exit_spoiler();
 	
 	new_spoiler("Region & Flag Codes"); // work on lining the region/flags up and add more

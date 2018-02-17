@@ -7,6 +7,7 @@
     #define ADDTOFLOAT(addr, add_value)            *(float *)(addr) += (float)(add_value)
     #define SUBTOFLOAT(addr, sub_value)            *(float *)(addr) -= (float)(sub_value)
 	#define MULTOFLOAT(addr, mul_value)            *(float *)(addr) *= (float)(mul_value)
+	#define BETWEEN(addr, min, max)            *(u32 *)(addr) > min && *(u32 *)(addr) < max
 #endif
 
 #ifndef READWRITEFLOAT
@@ -59,6 +60,9 @@ void	bulletSpeed(void);
 void	blueShellRide(void);
 void	itemWheel(void);
 void	TwoHundredCC(void);
+void	eliminationMode(void);
+void	tagMode(void);
+void	shineTheif(void);
 void	FiveHundredCC(void);
 void	disableFirstPersonView(void);
 void	vrExtender(void);
