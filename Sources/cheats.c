@@ -417,17 +417,16 @@ void	stalking(void) // could optimize a little more
 	}
 }
 
-/* void	cpuBrawl(void) // untested
+void	cpuBrawl(void) // untested
 {
-	int pointer = 0;
-	int pointer2 = 0;
-	for (int i = 1; i < 6; i++)
+	int pointer = 0, pointer2 = 0;
+	for (int i = 2; i < 9; i++)
 	{
 		pointer = 0x209C + READU32(0x65DA44) + (i * 0x44);
 		pointer2 = pointer + 0x44;
 		memcpy((void *)(READU32(pointer)), (void*)(READU32(pointer)), 0x30);
 	}
-} */
+}
 
 void	TouchCode(void)
 {
@@ -594,16 +593,130 @@ void	eliminationMode(void)
 	memcpy((void *)(offset), buffer4, 0x1C);
 }
 
-void	tagMode(void) // placeholder
+void	tagMode(void)
 {
-	WRITEU32(0x14000000, 0);
+	u32 g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition(), pointer = 0, d0pointer = 0, ccpointer = 0;
+	static u8 playerSlot = 0, taggedPlayer = 0, score = 0;
+	static u16 time = 0;
+	static bool tagged = false;
+	if (g_raceCondition != 1)
+	{
+		playerSlot = 0;
+		pointer = 0;
+		taggedPlayer = 0;
+		time = 0;
+		score = 50;
+		tagged = false;
+		return;
+	}
+	if (g_raceCondition == 1 && g_racePointer > 0x16000000 && g_racePointer < 0x18000000 && READU32(0x65DA44) > 0x14000000 && READU32(0x65DA44) < 0x18000000 && READU8(READU32(0x65C9A8) + 0x175A8) < 10 && READU32(0x140005AC) > 0x14000000 && READU32(0x140005AC) < 0x18000000)
+	{
+		if (READU32(READU32(0x140005AC) + 0x12C8) > 0x14000000 && READU32(READU32(0x140005AC) + 0x12C8) < 0x18000000 && READU32(READU32(0x140005AC) + 0x12C4) > 0x14000000 && READU32(READU32(0x140005AC) + 0x12C4) < 0x18000000)
+		{
+			ccpointer = READU32(READU32(0x140005AC) + 0x12C4);
+			d0pointer = READU32(READU32(0x140005AC) + 0x12C8);
+			playerSlot = READU8(READU32(0x65C9A8) + 0x175A8) + 1;
+			if (READU16(d0pointer + 0x1878) == 7200)
+			{
+				score = 50;
+				WRITEU8(ccpointer + 0x46, score);
+				WRITEU8(ccpointer + 0x54, score);
+				if (playerSlot == 1)
+				{
+					tagged = true;
+					score++;
+				}
+			}
+			for (int i = 1; i < 9; i++)
+			{
+				pointer = READU32(READU32(0x65DA44) + (i * 0x44) + 0x209C);
+				if (pointer > 0x14000000 && pointer < 0x18000000)
+				{
+					if (READU16(pointer + 0xFF4) > 0x40 && READU16(pointer + 0xFF4) < 0x180)
+					{
+						taggedPlayer = i;
+					}
+				}
+			}
+			if (tagged)
+			{
+				WRITEU16(g_racePointer + 0xFF4, 0xB0);
+				if (time == 0 && READU16(d0pointer + 0x1878) != 7200 || (time - 120) > READU16(d0pointer + 0x1878))
+				{
+					score--;
+					time = READU16(d0pointer + 0x1878);
+					WRITEU8(ccpointer + 0x46, score);
+					WRITEU8(ccpointer + 0x54, score);
+					if (time < 6900 && READU16(g_racePointer + 0xFF4) > 0x40 && taggedPlayer != playerSlot)
+					{
+						WRITEU16(g_racePointer + 0xFF4, 0);
+						tagged = false;
+						return;
+					}
+				}
+				if (READU16(g_racePointer + 0x1F6C) > 5 && READU16(g_racePointer + 0x1F6C) < 0xA000)
+				{
+					for (int i = 1; i < 9; i++)
+					{
+						pointer = READU32(READU32(0x65DA44) + (i * 0x44) + 0x209C);
+						if (i == playerSlot)
+						{
+							continue;
+						}
+						if (READFLOAT(pointer + 0x24) - READFLOAT(g_racePointer + 0x24) < 40.f && READFLOAT(pointer + 0x24) - READFLOAT(g_racePointer + 0x24) > -40.f)
+						{
+							if (READFLOAT(pointer + 0x28) - READFLOAT(g_racePointer + 0x28) < 40.f && READFLOAT(pointer + 0x28) - READFLOAT(g_racePointer + 0x28) > -40.f)
+							{
+								if (READFLOAT(pointer + 0x2C) - READFLOAT(g_racePointer + 0x2C) < 40.f && READFLOAT(pointer + 0x2C) - READFLOAT(g_racePointer + 0x2C) > -40.f)
+								{
+									WRITEU16(g_racePointer + 0xFF4, 0);
+									tagged = false; 
+									taggedPlayer = i;
+								}
+							}
+						}
+					}
+				}
+			}
+			if (!tagged)
+			{
+				pointer = READU32(READU32(0x65DA44) + (taggedPlayer * 0x44) + 0x209C);
+				WRITEU16(g_racePointer + 0xFF4, 0);
+				if (time == 0 || (time - 120) > READU16(d0pointer + 0x1878))
+				{
+					score++;
+					time = READU16(d0pointer + 0x1878);
+					WRITEU8(ccpointer + 0x46, score);
+					WRITEU8(ccpointer + 0x54, score);
+					if (time < 6900 && READU16(READU32(READU32(0x65DA44) + (taggedPlayer * 0x44) + 0x209C) + 0xFF4) < 0x40 && playerSlot == taggedPlayer)
+					{
+						tagged = true;
+						taggedPlayer = playerSlot;
+						return;
+					}
+				}
+				if (READU16(g_racePointer + 0xC32) == 1 && READFLOAT(pointer + 0x24) - READFLOAT(g_racePointer + 0x24) < 40.f && READFLOAT(pointer + 0x24) - READFLOAT(g_racePointer + 0x24) > -40.f)
+				{
+					if (READFLOAT(pointer + 0x28) - READFLOAT(g_racePointer + 0x28) < 40.f && READFLOAT(pointer + 0x28) - READFLOAT(g_racePointer + 0x28) > -40.f)
+					{
+						if (READFLOAT(pointer + 0x2C) - READFLOAT(g_racePointer + 0x2C) < 40.f && READFLOAT(pointer + 0x2C) - READFLOAT(g_racePointer + 0x2C) > -40.f)
+						{
+							WRITEU16(g_racePointer + 0xFF4, 0xB0);
+							tagged = true;
+							taggedPlayer = playerSlot;
+						}
+					}
+				}
+			}
+		}
+	}
 }
 
 void	shineTheif(void)
 {
 	u32 g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition(), pointer = 0, d0pointer = 0, ccpointer = 0;
 	static u8 playerSlot = 0, shinePlayer = 0, score = 0;
-	static u16 time = 0, boost = 0;
+	static u16 time = 0;
 	static bool withShine = false;
 	if (g_raceCondition != 1)
 	{
@@ -612,7 +725,6 @@ void	shineTheif(void)
 		shinePlayer = 0;
 		time = 0;
 		score = 0;
-		boost = 0;
 		withShine = false;
 		return;
 	}
@@ -646,7 +758,6 @@ void	shineTheif(void)
 			}
 			if (withShine)
 			{
-				boost = 0;
 				WRITEU16(g_racePointer + 0xFF4, 0xB0);
 				if (time == 0 && READU16(d0pointer + 0x1878) != 7200 || (time - 120) > READU16(d0pointer + 0x1878))
 				{
@@ -691,7 +802,6 @@ void	shineTheif(void)
 				WRITEU16(g_racePointer + 0xFF4, 0);
 				if (time == 0 || (time - 120) > READU16(d0pointer + 0x1878))
 				{
-					boost += 10;
 					time = READU16(d0pointer + 0x1878);
 					if (time < 6900 && READU16(READU32(READU32(0x65DA44) + (shinePlayer * 0x44) + 0x209C) + 0xFF4) < 0x40 && playerSlot == shinePlayer)
 					{
@@ -699,11 +809,6 @@ void	shineTheif(void)
 						shinePlayer = playerSlot;
 						return;
 					}
-				}
-				if (is_pressed(DL) && boost > 0)
-				{
-					WRITEU16(g_racePointer + 0xF9C, boost);
-					boost = 0;
 				}
 				if (READU16(g_racePointer + 0xC32) == 1 && READFLOAT(pointer + 0x24) - READFLOAT(g_racePointer + 0x24) < 40.f && READFLOAT(pointer + 0x24) - READFLOAT(g_racePointer + 0x24) > -40.f)
 				{

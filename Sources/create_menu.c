@@ -154,7 +154,7 @@ void    my_menus(void)
 	
 	new_spoiler("Custom Game Modes");
 		new_entry_with_note("Shine Thief", shineTheif_note, shineTheif);
-		//new_entry_with_note("Tag", tagMode_note, tagMode);
+		new_entry_with_note("Tag", tagMode_note, tagMode);
 		new_entry_with_note("Elimination Mode", eliminationMode_note, eliminationMode);
 	exit_spoiler();
 	
