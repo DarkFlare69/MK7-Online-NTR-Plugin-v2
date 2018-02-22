@@ -417,14 +417,19 @@ void	stalking(void) // could optimize a little more
 	}
 }
 
-void	cpuBrawl(void) // untested
+void	cpuBrawl(void)
 {
-	int pointer = 0, pointer2 = 0;
+	u32 g_raceCondition = GetRaceCondition(), pointer = 0, pointer2 = 0;
+	if (g_raceCondition != 1)
+		return;
 	for (int i = 2; i < 9; i++)
 	{
-		pointer = 0x209C + READU32(0x65DA44) + (i * 0x44);
-		pointer2 = pointer + 0x44;
-		memcpy((void *)(READU32(pointer)), (void*)(READU32(pointer)), 0x30);
+		pointer = READU32(0x209C + READU32(0x65DA44) + (i * 0x44));
+		pointer2 = READU32(0x209C + READU32(0x65DA44) + ((i + 1) * 0x44));
+		if (pointer > 0x16000000 && pointer < 0x18000000 && pointer2 > 0x16000000 && pointer2 < 0x18000000)
+		{
+			memcpy((void *)(pointer2 + 0x20), (void*)(pointer + 0x20), 24);
+		}
 	}
 }
 
@@ -605,7 +610,7 @@ void	tagMode(void)
 		pointer = 0;
 		taggedPlayer = 0;
 		time = 0;
-		score = 50;
+		score = 30;
 		tagged = false;
 		return;
 	}
@@ -618,13 +623,13 @@ void	tagMode(void)
 			playerSlot = READU8(READU32(0x65C9A8) + 0x175A8) + 1;
 			if (READU16(d0pointer + 0x1878) == 7200)
 			{
-				score = 50;
+				score = 30;
 				WRITEU8(ccpointer + 0x46, score);
 				WRITEU8(ccpointer + 0x54, score);
 				if (playerSlot == 1)
 				{
 					tagged = true;
-					score++;
+					score = 51;
 				}
 			}
 			for (int i = 1; i < 9; i++)
@@ -684,7 +689,8 @@ void	tagMode(void)
 				WRITEU16(g_racePointer + 0xFF4, 0);
 				if (time == 0 || (time - 120) > READU16(d0pointer + 0x1878))
 				{
-					score++;
+					if (score < 99)
+						score++;
 					time = READU16(d0pointer + 0x1878);
 					WRITEU8(ccpointer + 0x46, score);
 					WRITEU8(ccpointer + 0x54, score);

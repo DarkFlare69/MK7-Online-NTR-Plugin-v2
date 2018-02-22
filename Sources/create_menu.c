@@ -137,7 +137,7 @@ void    my_menus(void)
 	exit_spoiler();
 	
 	new_spoiler("Course Codes");
-		//new_entry_with_note("CPU Brawl", invincible_note, cpuBrawl); // this code hasn't been tested
+		new_entry_with_note("CPU Brawl", invincible_note, cpuBrawl); // this code hasn't been tested
 		new_entry_with_note("Max Timer", maxTimer_note, maxTimer);
 		new_entry_with_note("Water Everywhere", waterEverywhere_note, waterEverywhere);
 	exit_spoiler();

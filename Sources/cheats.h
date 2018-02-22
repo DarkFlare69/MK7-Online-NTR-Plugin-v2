@@ -43,7 +43,7 @@ void	fastReverse(void);
 void	noCountdown(void);
 void	moonjump(void);
 void	stalking(void);
-//void	cpuBrawl(void);
+void	cpuBrawl(void);
 void	TouchCode(void);
 void	saveSlotTeleporter(void);
 void	maxTimer(void);
