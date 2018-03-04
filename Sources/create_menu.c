@@ -99,7 +99,11 @@ char	*builder_name = "DarkFlare";
 	static const char * const eliminationMode_note = "Every 30 seconds, the player in last place will be eliminated. The last player standing wins! This mode works best in rooms with more players.";
 	static const char * const tagMode_note = "One player will be 'it' and they have to try and tag another player by running into them! You will lose points the longer you are 'it' and also gain points for not being 'it'. The tagged person can will always be in a star.";
 	static const char * const shineTheif_note = "One player will start off with the 'shine' and they have to protect it from other people, who will try to steal it by running into the player with the shine! You will gain points the longer you have the shine. The person with the shine will always be in a star.\nD-Pad Left = Use Gained Boost";
+	static const char * const instantAcceleration_note = "Your kart will instantly accelerate to the maximum speed when pressing A.";
+	static const char * const instantBackAcceleration_note = "Your kart will instantly accelerate to it's maximum reverse speed when pressing B.";
+	static const char * const instantStop_note = "Your kart will instantly come to a complete stop when pressing A+B.";
 
+	
 void    my_menus(void)
 {
 	new_spoiler("Kart Codes");
@@ -115,6 +119,9 @@ void    my_menus(void)
 	new_spoiler("Speed & Movement Codes");
 		new_entry_with_note("200cc", TwoHundredCC_note, TwoHundredCC);
 		new_entry_with_note("500cc", FiveHundredCC_note, FiveHundredCC);
+		new_entry_with_note("Instant Acceleration", instantAcceleration_note, instantAcceleration);
+		new_entry_with_note("Instant Backwards Acceleration", instantBackAcceleration_note, instantBackAcceleration);
+		new_entry_with_note("Instant Stop", instantStop_note, instantStop);
 		new_entry_with_note("Fast Reverse Speeds", fastReverse_note, fastReverse);
 		new_entry_with_note("Stalking Hack (See Note)", stalking_note, stalking);
 		new_entry_with_note("Touch Screen Teleporter", TouchCode_note, TouchCode);

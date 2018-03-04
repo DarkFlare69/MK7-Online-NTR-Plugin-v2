@@ -563,6 +563,33 @@ void	itemWheel(void)
 
 /////////////////////////////////////////////////////////    Start of speed codes    /////////////////////////////////////////////////////////
 
+void	instantAcceleration(void)
+{
+	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
+	if (g_raceCondition == 1 && is_pressed(1) && g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
+	{
+		WRITEU32(g_racePointer + 0xF2C, READU32(READU32(READU32(0x140002F4) - 0xA4) - 0x2C3B0));
+	}
+}
+
+void	instantBackAcceleration(void)
+{
+	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
+	if (g_raceCondition == 1 && is_pressed(2) && g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
+	{
+		WRITEFLOAT(g_racePointer + 0xF2C, -1.f * READFLOAT(READU32(READU32(0x140002F4) - 0xA4) - 0x2C3B0));
+	}
+}
+
+void	instantStop(void)
+{
+	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
+	if (g_raceCondition == 1 && is_pressed(3) && g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
+	{
+		WRITEU32(g_racePointer + 0xF2C, 0);
+	}
+}
+
 void	TwoHundredCC(void)
 {
 	writeSpeed(0x413C0000);
