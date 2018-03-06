@@ -34,6 +34,7 @@ void	writeLocation(u32 location);
 void	writeFlag(u8 flag);
 void	invincible(void);
 void	alwaysStarPower(void);
+void	trickAnywhere(void);
 void	alwaysBlackKart(void);
 void	alwaysShocked(void);
 void	alwaysCrushed(void);

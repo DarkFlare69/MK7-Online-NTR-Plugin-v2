@@ -102,6 +102,7 @@ char	*builder_name = "DarkFlare";
 	static const char * const instantAcceleration_note = "Your kart will instantly accelerate to the maximum speed when pressing A.";
 	static const char * const instantBackAcceleration_note = "Your kart will instantly accelerate to it's maximum reverse speed when pressing B.";
 	static const char * const instantStop_note = "Your kart will instantly come to a complete stop when pressing A+B.";
+	static const char * const trickAnywhere_note = "You will be able to perform a trick anywhere by pressing R.";
 
 	
 void    my_menus(void)
@@ -112,6 +113,7 @@ void    my_menus(void)
 		new_entry_with_note("Always Black Kart", alwaysBlackKart_note, alwaysBlackKart);
 		new_entry_with_note("Always Shocked", alwaysShocked_note, alwaysShocked);
 		new_entry_with_note("Always Crushed", alwaysCrushed_note, alwaysCrushed);
+		new_entry_with_note("Trick Anywhere", trickAnywhere_note, trickAnywhere);
 		new_entry_with_note("Instant MiniTurbo", instantMT_note, instantMT);
 		new_entry_with_note("Huge Bunnyhop", hugeBunnyhop_note, hugeBunnyhop);
 	exit_spoiler();

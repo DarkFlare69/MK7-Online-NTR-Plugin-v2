@@ -170,60 +170,54 @@ void	writeFlag(u8 flag)
 void	invincible(void)
 {
 	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
-	if (g_raceCondition == 1)
+	if (g_raceCondition == 1 && g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
 	{
-		if (g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
-		{
-			WRITEU16(g_racePointer + 0x102C, 0xFFFF);
-		}
+		WRITEU16(g_racePointer + 0x102C, 0xFFFF);
 	}
 }
 
 void	alwaysStarPower(void)
 {
 	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
-	if (g_raceCondition == 1)
+	if (g_raceCondition == 1 && g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
 	{
-		if (g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
-		{
-			WRITEU16(g_racePointer + 0xFF4, 0xFFFF);
-		}
+		WRITEU16(g_racePointer + 0xFF4, 0xFFFF);
+	}
+}
+
+void	trickAnywhere(void)
+{
+	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
+	if (g_raceCondition == 1 && g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
+	{
+		WRITEU16(g_racePointer + 0xFF0, 0xFFFF);
 	}
 }
 
 void	alwaysBlackKart(void)
 {
 	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
-	if (g_raceCondition == 1)
+	if (g_raceCondition == 1 && g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
 	{
-		if (g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
-		{
-			WRITEU16(g_racePointer + 0xFF8, 0xFFFF);
-		}
+		WRITEU16(g_racePointer + 0xFF8, 0xFFFF);
 	}
 }
 
 void	alwaysShocked(void)
 {
 	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
-	if (g_raceCondition == 1)
+	if (g_raceCondition == 1 & g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
 	{
-		if (g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
-		{
-			WRITEU16(g_racePointer + 0x1000, 0xFFFF);
-		}
+		WRITEU16(g_racePointer + 0x1000, 0xFFFF);
 	}
 }
 
 void	alwaysCrushed(void)
 {
 	unsigned int g_racePointer = GetRacePointer(), g_raceCondition = GetRaceCondition();
-	if (g_raceCondition == 1)
+	if (g_raceCondition == 1 && g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
 	{
-		if (g_racePointer > 0x15000000 && g_racePointer < 0x18000000)
-		{
-			WRITEU16(g_racePointer + 0x1004, 0xFFFF);
-		}
+		WRITEU16(g_racePointer + 0x1004, 0xFFFF);
 	}
 }
 
@@ -901,7 +895,6 @@ void	vrExtender(void)
 
 void	randomVR(void)
 {
-	unsigned int random = 0;
 	if (READU16(0x14296A90) > 20000 && READU16(0x14296A90) < 200000)
 	{
 		random = READU16(0x14296A90) * 5;
